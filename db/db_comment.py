@@ -14,10 +14,10 @@ def create(db: Session, request: CommentBase):
     db.add(new_comment)
     db.commit()
     db.refresh(new_comment)
-    return "ok"
+    return new_comment
 
 
 def get_all(db: Session, post_id: int):
-    return db.query(DbComment).filter(DbComment.id == post_id)
+    return db.query(DbComment).filter(DbComment.id == post_id).all()
 
 
