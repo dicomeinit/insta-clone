@@ -42,16 +42,13 @@ class PostDisplay(BaseModel):
     timestamp: datetime
     user: User
     comments: List[Comment]
-
     class Config():
         orm_model = True
-
 
 class UserAuth(BaseModel):
     id: int
     username: str
     email: str
-
 
 class CommentBase(BaseModel):
     username: str
