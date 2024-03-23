@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List
 
+# User
 class UserBase(BaseModel):
     username: str
     email: str
@@ -13,6 +14,7 @@ class UserDisplay(BaseModel):
     class Config():
         orm_model = True
 
+# Post
 class PostBase(BaseModel):
   image_url: str
   image_url_type: str
@@ -54,3 +56,16 @@ class CommentBase(BaseModel):
     username: str
     text: str
     post_id: int
+
+
+class LikeBase(BaseModel):
+    post_id: int
+    user_id: int
+
+class LikeDisplay(BaseModel):
+    id: int
+    user_id: int
+    post_id: int
+
+    class Config:
+        orm_mode = True
