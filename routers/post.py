@@ -2,7 +2,7 @@ from auth.oauth2 import get_current_user
 from fastapi import APIRouter, Depends, status, UploadFile, File
 from fastapi.exceptions import HTTPException
 from sqlalchemy.orm import Session
-from routers.schemas import PostBase, PostDisplay
+from routers.schemas import PostBase, PostDisplay, PostEdit
 from db.database import get_db
 from db import db_post
 from typing import List
@@ -25,6 +25,15 @@ def create(request: PostBase, db: Session = Depends(get_db), current_user: UserA
         raise HTTPException(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                             detail="Parameter image_url_type can only take values 'absolute' or 'relative'.")
     return db_post.create(db, request)
+
+
+# @router.get('/{post_id}', response_model=PostDisplay)
+# def get_post(post_id: int, db: Session = Depends(get_db), current_user: UserAuth = Depends(get_current_user)):
+#     return db_post.get_post(db, post_id)
+
+@router.put('/edit/{post_id}', response_model=PostDisplay)
+def update_post(post_id: int, request: PostEdit, db: Session = Depends(get_db), current_user: UserAuth = Depends(get_current_user)):
+    return db_post.update_post(db, post_id, request, current_user.id)
 
 
 @router.get('/all', response_model=List[PostDisplay])

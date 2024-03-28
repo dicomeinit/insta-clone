@@ -21,6 +21,9 @@ class PostBase(BaseModel):
   caption: str
   creator_id: int
 
+class PostEdit(BaseModel):
+  caption: str
+
 # For PostDisplay
 class User(BaseModel):
   username: str
