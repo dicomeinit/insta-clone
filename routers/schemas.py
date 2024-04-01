@@ -1,18 +1,22 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 # User
 class UserBase(BaseModel):
     username: str
     email: str
     password: str
+    bio: Optional[str] = None
 
 class UserDisplay(BaseModel):
     username: str
     email: str
+    bio: Optional[str] = None
+    followers: List[UserBase]
+    following: List[UserBase]
     class Config():
-        orm_model = True
+        orm_mode = True
 
 # Post
 class PostBase(BaseModel):

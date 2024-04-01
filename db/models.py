@@ -3,13 +3,34 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.orm import relationship
 
+
+class Follow(Base):
+    __tablename__ = "follows"
+    follower_id = Column(Integer, ForeignKey("user.id"), primary_key=True)
+    followed_id = Column(Integer, ForeignKey("user.id"), primary_key=True)
+
 class DbUser(Base):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String)
     email = Column(String)
     password = Column(String)
+    bio = Column(String, nullable=True)
     items = relationship('DbPost', back_populates='user')
+    followers = relationship(
+        "DbUser",
+        secondary="follows",
+        primaryjoin=id == Follow.followed_id,
+        secondaryjoin=id == Follow.follower_id,
+        back_populates="following",
+    )
+    following = relationship(
+        "DbUser",
+        secondary="follows",
+        primaryjoin=id == Follow.follower_id,
+        secondaryjoin=id == Follow.followed_id,
+        back_populates="followers",
+    )
 
 
 class DbPost(Base):

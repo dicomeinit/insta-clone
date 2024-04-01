@@ -11,6 +11,9 @@ import string
 import shutil
 from routers.schemas import UserAuth
 
+from fastapi_cache.decorator import cache
+
+
 router = APIRouter(
     prefix='/post',
     tags=['post']
@@ -35,9 +38,10 @@ def create(request: PostBase, db: Session = Depends(get_db), current_user: UserA
 def update_post(post_id: int, request: PostEdit, db: Session = Depends(get_db), current_user: UserAuth = Depends(get_current_user)):
     return db_post.update_post(db, post_id, request, current_user.id)
 
-
 @router.get('/all', response_model=List[PostDisplay])
-def posts(db: Session = Depends(get_db)):
+@cache(expire=60)
+async def posts(db: Session = Depends(get_db)):
+    print({"message": "The request was cached"})
     return db_post.get_all(db)
 
 

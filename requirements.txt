@@ -7,3 +7,5 @@ bcrypt
 python-multipart
 aiofiles
 python-jose
+fastapi-cache2
+aioredis
